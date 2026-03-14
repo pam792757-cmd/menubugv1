@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⬛ REU: ZENITH CRASH ULTIMATE ⬜</title>
+    <style>
+        /* ========== RESET & GLOBAL ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            margin: 0;
+            transition: background 0.3s ease;
+        }
+
+        /* Container utama dengan grid modern */
+        .zenith-container {
+            max-width: 1400px;
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 48px;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Header dengan aksen tipis */
+        .zenith-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        .title-section h1 {
+            color: #ffffff;
+            font-size: 2.8rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .title-section .sub {
+            color: #666666;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .badge {
+            color: #ffffff;
+            background: #1a1a1a;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            border: 1px solid #333;
+            font-weight: 500;
+        }
+
+        /* Grid fitur: dipisah rapi */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .feature-card {
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 32px;
+            padding: 24px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            border-color: #ffffff;
+            background: #141414;
+            transform: translateY(-2px);
+        }
+
+        .feature-card.selected {
+            border-color: #ffffff;
+            background: #1a1a1a;
+            box-shadow: 0 0 0 1px #ffffff inset;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .card-title {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            color: #808080;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Grid fitur tambahan (auto paste & bom gambar) */
+        .feature-grid-advanced {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .advanced-card {
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 32px;
+            padding: 24px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advanced-card:hover {
+            border-color: #ffffff;
+            background: #141414;
+            transform: translateY(-2px);
+        }
+
+        .advanced-card.selected {
+            border-color: #ffffff;
+            background: #1a1a1a;
+            box-shadow: 0 0 0 1px #ffffff inset;
+        }
+
+        /* Area pesan custom */
+        .message-area {
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .message-label {
+            color: #808080;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .message-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #1a1a1a;
+            border-radius: 16px;
+            border: 1px solid #333;
+            transition: 0.2s;
+        }
+
+        .message-input-wrapper:focus-within {
+            border-color: #ffffff;
+        }
+
+        #messageInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 18px 20px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            font-weight: 400;
+        }
+
+        #messageInput::placeholder {
+            color: #4a4a4a;
+        }
+
+        .char-counter {
+            padding: 0 20px;
+            color: #4a4a4a;
+            font-size: 0.8rem;
+            font-family: monospace;
+            border-left: 1px solid #333;
+        }
+
+        /* Action panel */
+        .action-panel {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #ffffff;
+            padding: 18px 24px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #2a2a2a;
+            border-color: #ffffff;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: #330000;
+            color: #ff8888;
+            border-color: #ff4444;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #440000;
+            border-color: #ff0000;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: #2a2a2a;
+        }
+
+        /* Modern Notification */
+        .notification-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            pointer-events: none;
+            width: auto;
+            max-width: 90%;
+        }
+
+        .modern-toast {
+            background: #0f0f0f;
+            border: 1px solid #ffffff;
+            padding: 20px 48px;
+            border-radius: 100px;
+            box-shadow: 0 30px 60px -10px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            backdrop-filter: blur(20px);
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-align: center;
+            white-space: nowrap;
+            opacity: 0;
+            transform: scale(0.9) translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        .modern-toast.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .modern-toast.error {
+            border-color: #ff4444;
+            color: #ff8888;
+            box-shadow: 0 30px 60px -10px rgba(255, 68, 68, 0.2);
+        }
+
+        .modern-toast.warning {
+            border-color: #ffaa00;
+            color: #ffbb33;
+        }
+
+        .modern-toast.success {
+            border-color: #00ff88;
+            color: #aaffcc;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        /* Status panel */
+        .status-panel {
+            display: flex;
+            justify-content: space-between;
+            color: #4a4a4a;
+            font-size: 0.7rem;
+            margin-top: 8px;
+        }
+
+        /* WebSocket status indicator */
+        .ws-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            border: 1px solid #333;
+        }
+
+        .ws-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .ws-dot.active {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        /* Utility */
+        .separator {
+            height: 1px;
+            background: #2a2a2a;
+            margin: 24px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .zenith-container { padding: 20px; }
+            .feature-grid, .feature-grid-advanced { grid-template-columns: 1fr; }
+            .action-panel { grid-template-columns: 1fr; }
+            .title-section h1 { font-size: 2rem; }
+            .modern-toast { white-space: normal; padding: 16px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="zenith-container">
+        <!-- HEADER -->
+        <div class="zenith-header">
+            <div class="title-section">
+                <h1>ZENITH//ULTIMATE</h1>
+                <div class="sub">by REU terminal · locked mode · v3.0.0</div>
+            </div>
+            <div class="badge" id="wsStatus">
+                <span class="ws-status">
+                    <span class="ws-dot" id="wsDot"></span>
+                    <span id="wsText">WebSocket: Disconnected</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- GRID FITUR UTAMA (INTENSITY) -->
+        <div class="feature-grid">
+            <div class="feature-card" data-mode="light" id="card-light">
+                <div class="card-icon">◐</div>
+                <div class="card-title">Light Pulse</div>
+                <div class="card-desc">Bom ringan untuk iseng · 500x spam · kompatibel semua device</div>
+            </div>
+            <div class="feature-card" data-mode="heavy" id="card-heavy">
+                <div class="card-icon">◑</div>
+                <div class="card-title">Heavy Gacor</div>
+                <div class="card-desc">2000x spam + unicode · bikin WA Web nge-freeze</div>
+            </div>
+            <div class="feature-card" data-mode="nuke" id="card-nuke">
+                <div class="card-icon">◕</div>
+                <div class="card-title">Nuke Zenith</div>
+                <div class="card-desc">5000x + ZWJ overload · guaranteed crash iOS/Android</div>
+            </div>
+        </div>
+
+        <!-- GRID FITUR LANJUTAN (AUTO PASTE & BOM GAMBAR) -->
+        <div class="feature-grid-advanced">
+            <div class="advanced-card" data-adv-mode="autopaste" id="card-autopaste">
+                <div class="card-icon">↗️</div>
+                <div class="card-title">Auto Paste (WebSocket)</div>
+                <div class="card-desc">Otomatis tempel & enter di WhatsApp Web · butuh koneksi WebSocket</div>
+            </div>
+            <div class="advanced-card" data-adv-mode="imagebomb" id="card-imagebomb">
+                <div class="card-icon">🖼️</div>
+                <div class="card-title">Bom Gambar Base64</div>
+                <div class="card-desc">Kirim gambar rusak ukuran raksasa · bikin WA Web overload render</div>
+            </div>
+        </div>
+
+        <!-- AREA PESAN CUSTOM -->
+        <div class="message-area">
+            <div class="message-label">Payload message / URL Gambar</div>
+            <div class="message-input-wrapper">
+                <input type="text" id="messageInput" placeholder="Ketik pesan bom atau paste URL gambar di sini..." value="⬛⬜ ZENITH ULTIMATE ⬜⬛" maxlength="500">
+                <span class="char-counter" id="charCount">0/500</span>
+            </div>
+        </div>
+
+        <!-- ACTION PANEL -->
+        <div class="action-panel">
+            <button class="btn btn-primary" id="generateBtn">
+                <span>⚡</span> GENERATE & COPY
+            </button>
+            <button class="btn" id="previewBtn">
+                <span>⌘</span> PREVIEW
+            </button>
+            <button class="btn btn-danger" id="autoPasteBtn" disabled>
+                <span>📋</span> AUTO PASTE
+            </button>
+        </div>
+
+        <!-- ACTION PANEL BARIS 2 (khusus bom gambar) -->
+        <div class="action-panel" style="grid-template-columns: 1fr 1fr; margin-top: 0;">
+            <button class="btn" id="generateImageBtn">
+                <span>🖼️</span> BIKIN BOM GAMBAR
+            </button>
+            <button class="btn" id="copyImageBtn" disabled>
+                <span>📋</span> COPY GAMBAR (BASE64)
+            </button>
+        </div>
+
+        <!-- PROGRESS & STATUS -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+        </div>
+        <div class="status-panel">
+            <span id="statusText">ready</span>
+            <span id="payloadSize">0 kb</span>
+        </div>
+
+        <!-- PREVIEW GAMBAR (tersembunyi, buat testing) -->
+        <div style="display: none;" id="imagePreviewContainer">
+            <img id="bombImagePreview" src="" alt="bomb preview">
+        </div>
+    </div>
+
+    <!-- MODERN NOTIFICATION -->
+    <div class="notification-container" id="notificationContainer">
+        <div class="modern-toast" id="customNotification">✓ berhasil</div>
+    </div>
+
+    <script>
+        (function() {
+            // ====================== KERNEL ULTIMATE ======================
+            const consoleStyle = "font-family: 'Inter', monospace; background: #000; color: #fff; border: 1px solid #fff; padding: 4px 12px; border-radius: 40px; font-weight: 500;";
+            console.log("%c⬛⬜ REU ZENITH ULTIMATE LOADED ⬜⬛", consoleStyle);
+
+            // DOM elements
+            const messageInput = document.getElementById('messageInput');
+            const charCount = document.getElementById('charCount');
+            const generateBtn = document.getElementById('generateBtn');
+            const previewBtn = document.getElementById('previewBtn');
+            const autoPasteBtn = document.getElementById('autoPasteBtn');
+            const generateImageBtn = document.getElementById('generateImageBtn');
+            const copyImageBtn = document.getElementById('copyImageBtn');
+            const progressBar = document.getElementById('progressBar');
+            const payloadSizeSpan = document.getElementById('payloadSize');
+            const statusText = document.getElementById('statusText');
+            const notification = document.getElementById('customNotification');
+            const wsDot = document.getElementById('wsDot');
+            const wsText = document.getElementById('wsText');
+            const bombImagePreview = document.getElementById('bombImagePreview');
+
+            // Cards
+            const cardLight = document.getElementById('card-light');
+            const cardHeavy = document.getElementById('card-heavy');
+            const cardNuke = document.getElementById('card-nuke');
+            const cardAutopaste = document.getElementById('card-autopaste');
+            const cardImagebomb = document.getElementById('card-imagebomb');
+            
+            // State
+            let selectedMode = 'heavy';
+            let selectedAdvMode = null; // 'autopaste' atau 'imagebomb'
+            let generatedPayload = '';
+            let generatedImageBase64 = '';
+            let wsConnection = null;
+            let wsConnected = false;
+
+            // Update char counter
+            function updateCharCount() {
+                const len = messageInput.value.length;
+                charCount.textContent = `${len}/500`;
+            }
+            messageInput.addEventListener('input', updateCharCount);
+            updateCharCount();
+
+            // ========== FITUR CARD SELECTION ==========
+            function selectCard(mode) {
+                [cardLight, cardHeavy, cardNuke].forEach(c => c.classList.remove('selected'));
+                if (mode === 'light') cardLight.classList.add('selected');
+                if (mode === 'heavy') cardHeavy.classList.add('selected');
+                if (mode === 'nuke') cardNuke.classList.add('selected');
+                selectedMode = mode;
+            }
+
+            function selectAdvCard(mode) {
+                [cardAutopaste, cardImagebomb].forEach(c => c.classList.remove('selected'));
+                if (mode === 'autopaste') {
+                    cardAutopaste.classList.add('selected');
+                    selectedAdvMode = 'autopaste';
+                    connectWebSocket(); // Coba konek WebSocket
+                } else if (mode === 'imagebomb') {
+                    cardImagebomb.classList.add('selected');
+                    selectedAdvMode = 'imagebomb';
+                } else {
+                    selectedAdvMode = null;
+                }
+            }
+
+            cardLight.addEventListener('click', () => {
+                selectCard('light');
+                selectAdvCard(null);
+            });
+            cardHeavy.addEventListener('click', () => {
+                selectCard('heavy');
+                selectAdvCard(null);
+            });
+            cardNuke.addEventListener('click', () => {
+                selectCard('nuke');
+                selectAdvCard(null);
+            });
+            cardAutopaste.addEventListener('click', () => {
+                selectCard(null); // Nonaktifin mode intensity
+                selectAdvCard('autopaste');
+            });
+            cardImagebomb.addEventListener('click', () => {
+                selectCard(null);
+                selectAdvCard('imagebomb');
+            });
+
+            selectCard('heavy'); // default
+
+            // ========== WEBSOCKET SIMULATION (AUTO PASTE) ==========
+            function connectWebSocket() {
+                // Simulasi koneksi WebSocket (di sini kita pake WebSocket API beneran ke server dummy? 
+                // Tapi karena ini cuma frontend, kita simulasi aja koneksinya.
+                // Tapi untuk auto paste ke WA Web, kita perlu inject script ke WA Web.
+                // Caranya: kita kasih instruksi ke user buat buka console WA Web dan paste script.
+
+                wsDot.className = 'ws-dot active';
+                wsText.textContent = 'WebSocket: Simulated';
+                wsConnected = true;
+                autoPasteBtn.disabled = false;
+                showNotif('WebSocket mode aktif. Klik AUTO PASTE setelah buka WA Web.', 'success');
+            }
+
+            // Fungsi auto paste (simulasi)
+            function autoPasteToWA() {
+                if (!wsConnected) {
+                    showNotif('WebSocket belum siap', 'error');
+                    return;
+                }
+
+                if (!generatedPayload) {
+                    showNotif('Generate payload dulu', 'e
