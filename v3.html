@@ -140,15 +140,42 @@
         log.prepend(div);
     }
 
-    function startAction(type) {
-        let logId = "log" + type.charAt(0) + type.slice(1).toLowerCase();
-        let targetId = "target" + type.charAt(0) + type.slice(1).toLowerCase();
-        let target = document.getElementById(targetId).value;
+    async function startAction(type) {
+    let logId = "log" + type.charAt(0) + type.slice(1).toLowerCase();
+    let targetId = "target" + type.charAt(0) + type.slice(1).toLowerCase();
+    let target = document.getElementById(targetId) ? document.getElementById(targetId).value : "";
+    let pesan = document.getElementById("pesan" + type) ? document.getElementById("pesan" + type).value : "";
 
-        if(!target) {
-            alert("Masukkan nomor target dulu, Tuan!");
-            return;
+    if(!target) {
+        addLog(logId, `❌ Gagal: Nomor target wajib diisi!`);
+        return;
+    }
+
+    addLog(logId, `🚀 Mengirim perintah ${type} ke Bot...`);
+
+    // Jembatan ke Bot Termux Tuan
+    try {
+        const response = await fetch(`http://localhost:3000/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                command: type.toLowerCase(),
+                target: target,
+                message: pesan,
+                jumlah: document.getElementById("jmlBom") ? document.getElementById("jmlBom").value : 1
+            })
+        });
+        
+        if(response.ok) {
+            addLog(logId, `✅ Bot menerima perintah! Menyerang...`);
+        } else {
+            addLog(logId, `❌ Bot Offline! Pastikan Bot di Termux sudah jalan.`);
         }
+    } catch (err) {
+        addLog(logId, `⚠️ Error: Bot tidak merespon (Localhost:3000)`);
+    }
+}
+
 
         addLog(logId, `[INIT] Menghubungkan ke API...`);
         addLog(logId, `[TARGET] Membidik: ${target}`);
