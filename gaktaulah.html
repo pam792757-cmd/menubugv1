@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ WA-TOOL ULTIMATE - cvAI4</title>
+    <style>
+        :root { --neon: #00ffff; --bg: #0a1a2f; --card: rgba(10, 30, 45, 0.9); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(145deg, #0a1a2f, #1a3f5a); color: white; min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: var(--card); backdrop-filter: blur(15px); border-radius: 30px; padding: 25px; border: 1px solid var(--neon); box-shadow: 0 10px 30px rgba(0,255,255,0.2); }
+        
+        /* Navigation Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
+        .tab-btn { padding: 10px 20px; border: 1px solid var(--neon); background: transparent; color: var(--neon); border-radius: 15px; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        .tab-btn.active { background: var(--neon); color: black; font-weight: bold; }
+
+        .content { display: none; }
+        .content.active { display: block; }
+
+        /* Component Styling */
+        .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; margin-bottom: 15px; }
+        .input-field, .textarea-field { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(0,255,255,0.3); color: white; border-radius: 10px; margin-top: 10px; }
+        .btn-action { width: 100%; padding: 15px; background: var(--neon); color: black; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .log-box { height: 150px; background: #000; border-radius: 10px; padding: 10px; font-family: monospace; font-size: 12px; overflow-y: auto; margin-top: 15px; border: 1px solid #333; }
+        .log-entry { margin-bottom: 5px; color: #0f0; }
+        .slider-row { display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px; }
+        input[type=range] { width: 70%; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align:center; margin-bottom: 20px; color: var(--neon);">⚡ WA-TOOL SUITE v3.0</h2>
+    
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'bom')">💣 BOM</button>
+        <button class="tab-btn" onclick="openTab(event, 'crash')">⚠️ CRASH</button>
+        <button class="tab-btn" onclick="openTab(event, 'band')">📢 BAND</button>
+        <button class="tab-btn" onclick="openTab(event, 'settings')">⚙️ SETTINGS</button>
+    </div>
+
+    <div id="bom" class="content active">
+        <div class="card">
+            <input type="number" id="targetBom" class="input-field" placeholder="628xxx (Nomor Target)">
+            <textarea id="pesanBom" class="textarea-field" placeholder="Pesan Bom...">🔥 Gacor Tuan! 🔥</textarea>
+            <div class="slider-row">
+                <span>Delay: <b id="delayVal">300</b>ms</span>
+                <input type="range" id="delayBom" min="50" max="2000" value="300" oninput="updateVal('delayVal', this.value)">
+            </div>
+            <button class="btn-action" onclick="startAction('BOM')">💥 EKSEKUSI BOM 💥</button>
+            <div class="log-box" id="logBom"></div>
+        </div>
+    </div>
+
+    <div id="crash" class="content">
+        <div class="card">
+            <select id="tipeCrash" class="input-field">
+                <option>UNICODE GLITCH - Memory Leak</option>
+                <option>ZERO WIDTH LOOP - Freeze</option>
+                <option>RLO REVERSE - Logic Error</option>
+            </select>
+            <button class="btn-action" onclick="startAction('CRASH')">⚠️ KIRIM BUG ⚠️</button>
+            <div class="log-box" id="logCrash"></div>
+        </div>
+    </div>
+
+    <div id="band" class="content">
+        <div class="card">
+            <textarea id="pesanBand" class="textarea-field">⚠️ INFO BROADCAST ⚠️</textarea>
+            <button class="btn-action" onclick="startAction('BAND')">📢 MULAI BROADCAST 📢</button>
+            <div class="log-box" id="logBand"></div>
+        </div>
+    </div>
+
+    <div id="settings" class="content">
+        <div class="card">
+            <p><strong>System Info:</strong></p><br>
+            <p>Owner: Tuan Gigs</p>
+            <p>Engine: cvAI4 Hybrid</p>
+            <p>Status: <span style="color:#0f0">Online & Gacor</span></p>
+            <button class="btn-action" style="background:#ff4444" onclick="location.reload()">🔄 RESET ENGINE</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        let content = document.getElementsByClassName("content");
+        for (let i = 0; i < content.length; i++) content[i].className = "content";
+        let buttons = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < buttons.length; i++) buttons[i].className = "tab-btn";
+        document.getElementById(tabName).className = "content active";
+        evt.currentTarget.className = "tab-btn active";
+    }
+
+    function updateVal(id, val) { document.getElementById(id).innerText = val; }
+
+    function addLog(targetId, msg) {
+        let log = document.getElementById(targetId);
+        let div = document.createElement("div");
+        div.className = "log-entry";
+        div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        log.prepend(div);
+    }
+
+    function startAction(type) {
+        let logId = "log" + type.charAt(0) + type.slice(1).toLowerCase();
+        addLog(logId, `Memulai ${type}...`);
+        
+        // Simulasi pengiriman (Hubungkan ke script Termux Tuan)
+        setTimeout(() => {
+            addLog(logId, `✅ Berhasil mengirim payload ke sistem.`);
+        }, 1000);
+    }
+</script>
+</body>
+</html>
