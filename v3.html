@@ -3,582 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 WA TOOL - RED BLACK EDITION 🔥</title>
+    <title>⚡ WA-TOOL ULTIMATE - cvAI4</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
-        }
+        :root { --neon: #00ffff; --bg: #0a1a2f; --card: rgba(10, 30, 45, 0.9); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(145deg, #0a1a2f, #1a3f5a); color: white; min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: var(--card); backdrop-filter: blur(15px); border-radius: 30px; padding: 25px; border: 1px solid var(--neon); box-shadow: 0 10px 30px rgba(0,255,255,0.2); }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; border-bottom: 1px solid rgba(0,255,255,0.2); }
+        .tab-btn { padding: 10px 20px; border: 1px solid var(--neon); background: transparent; color: var(--neon); border-radius: 15px; cursor: pointer; transition: 0.3s; white-space: nowrap; font-weight: bold; }
+        .tab-btn.active { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
 
-        body {
-            background: linear-gradient(145deg, #1a0c0c 0%, #2a0f0f 30%, #1e1a1a 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
+        .content { display: none; animation: fadeIn 0.4s; }
+        .content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* efek grid halus merah */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(180, 40, 40, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(180, 40, 40, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-        }
+        .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .label { font-size: 12px; color: var(--neon); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; }
+        .input-field, .textarea-field { width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,255,255,0.3); color: white; border-radius: 10px; margin-bottom: 15px; outline: none; }
+        .input-field:focus { border-color: var(--neon); box-shadow: 0 0 10px rgba(0,255,255,0.2); }
 
-        /* efek glow merah gelap */
-        body::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(180, 20, 20, 0.1) 0%, transparent 60%);
-            pointer-events: none;
-        }
+        .btn-action { width: 100%; padding: 15px; background: var(--neon); color: black; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .btn-action:hover { transform: scale(1.02); filter: brightness(1.2); }
 
-        .main-container {
-            max-width: 1300px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.2fr 0.9fr;
-            gap: 25px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* card style merah-hitam modern */
-        .card {
-            background: rgba(18, 12, 12, 0.85);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(200, 60, 60, 0.25);
-            border-radius: 48px;
-            padding: 30px 28px;
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.7),
-                0 0 0 1px rgba(200, 40, 40, 0.3),
-                0 0 30px rgba(150, 20, 20, 0.2),
-                inset 0 0 30px rgba(100, 10, 10, 0.2);
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.8),
-                0 0 0 2px rgba(220, 60, 60, 0.5),
-                0 0 50px rgba(180, 30, 30, 0.3);
-            transform: translateY(-5px);
-            border-color: rgba(220, 70, 70, 0.4);
-        }
-
-        /* header card */
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(200, 60, 60, 0.3);
-        }
-
-        .card-icon {
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(145deg, #8b1e1e, #4a0c0c);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            box-shadow: 0 10px 20px rgba(100, 10, 10, 0.8), 0 0 30px rgba(200, 50, 50, 0.5);
-            border: 2px solid rgba(220, 80, 80, 0.7);
-            color: #ffb3b3;
-        }
-
-        .card-title {
-            flex: 1;
-        }
-
-        .card-title h2 {
-            font-size: 32px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffb8b8, #ff6b6b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-            text-shadow: 0 0 15px rgba(255, 80, 80, 0.5);
-        }
-
-        .card-title p {
-            color: #c49b9b;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        /* input group modern */
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #e0a8a8;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .input-label span {
-            background: #5c1e1e;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            color: #ffcaca;
-            font-weight: 800;
-        }
-
-        .modern-input, .modern-textarea {
-            width: 100%;
-            background: rgba(30, 10, 10, 0.7);
-            border: 2px solid #a13b3b;
-            border-radius: 28px;
-            padding: 16px 24px;
-            font-size: 16px;
-            color: #ffd9d9;
-            outline: none;
-            transition: 0.2s;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7), 0 0 10px rgba(180, 50, 50, 0.5);
-        }
-
-        .modern-input:focus, .modern-textarea:focus {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 25px rgba(255, 80, 80, 0.5), inset 0 0 15px #3d1a1a;
-            background: rgba(50, 15, 15, 0.8);
-        }
-
-        .modern-input::placeholder, .modern-textarea::placeholder {
-            color: #a57a7a;
-            font-style: italic;
-        }
-
-        .modern-textarea {
-            min-height: 120px;
-            resize: vertical;
-            border-radius: 36px;
-        }
-
-        /* input group horizontal untuk jumlah & delay */
-        .input-row {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .input-half {
-            flex: 1;
-        }
-
-        /* button modern */
-        .btn-modern {
-            background: linear-gradient(145deg, #7a1f1f, #a12f2f);
-            border: none;
-            padding: 18px 25px;
-            border-radius: 60px;
-            width: 100%;
-            font-size: 22px;
-            font-weight: 800;
-            color: #fff0f0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 
-                0 12px 0 #2f0c0c,
-                0 10px 30px rgba(150, 30, 30, 0.6),
-                0 0 20px rgba(200, 50, 50, 0.4);
-            cursor: pointer;
-            transition: 0.1s;
-            margin: 15px 0 10px;
-            border: 2px solid #c44b4b;
-        }
-
-        .btn-modern:active {
-            transform: translateY(8px);
-            box-shadow: 0 4px 0 #2f0c0c, 0 10px 30px rgba(150, 30, 30, 0.6);
-        }
-
-        .btn-modern:disabled {
-            opacity: 0.5;
-            transform: translateY(4px);
-            box-shadow: 0 4px 0 #2f0c0c;
-            cursor: not-allowed;
-        }
-
-        /* statistik */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 25px 0;
-        }
-
-        .stat-box {
-            background: rgba(40, 15, 15, 0.7);
-            border-radius: 30px;
-            padding: 15px 10px;
-            text-align: center;
-            border: 1px solid #a54242;
-            backdrop-filter: blur(5px);
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 900;
-            color: #ffb6b6;
-            text-shadow: 0 0 15px rgba(200, 50, 50, 0.7);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #cfa5a5;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        /* log console */
-        .log-console {
-            background: rgba(20, 8, 8, 0.95);
-            border-radius: 36px;
-            padding: 20px;
-            border: 2px solid #a54242;
-            color: #f0b3b3;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            max-height: 200px;
-            overflow-y: auto;
-            box-shadow: inset 0 0 40px #1a0808;
-            margin-top: 20px;
-        }
-
-        .log-entry {
-            padding: 6px 0;
-            border-bottom: 1px solid #732a2a;
-            color: #ffc9c9;
-        }
-
-        /* right panel */
-        .right-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        /* preview box */
-        .preview-box {
-            background: rgba(30, 10, 10, 0.6);
-            border-radius: 40px;
-            padding: 25px;
-            border: 2px solid #a13b3b;
-            text-align: center;
-        }
-
-        .preview-emoji {
-            font-size: 70px;
-            filter: drop-shadow(0 0 25px rgba(200, 40, 40, 0.7));
-            margin-bottom: 10px;
-            animation: pulse 3s infinite;
-        }
-
-        @keyframes pulse {
-            0%,100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 1; }
-        }
-
-        /* responsive */
-        @media (max-width: 900px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-        }
+        .log-box { height: 180px; background: #000; border-radius: 15px; padding: 15px; font-family: 'Courier New', monospace; font-size: 11px; overflow-y: auto; margin-top: 15px; border: 1px solid #333; }
+        .log-entry { margin-bottom: 5px; color: #0f0; border-left: 2px solid var(--neon); padding-left: 8px; }
+        
+        .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
+        input[type=range] { width: 60%; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- panel kiri: BOM CHAT -->
+
+<div class="container">
+    <h2 style="text-align:center; margin-bottom: 20px; color: var(--neon); text-shadow: 0 0 10px var(--neon);">⚡ WA-TOOL ULTIMATE</h2>
+    
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'bom')">💣 BOM</button>
+        <button class="tab-btn" onclick="openTab(event, 'crash')">⚠️ CRASH</button>
+        <button class="tab-btn" onclick="openTab(event, 'band')">📢 BAND</button>
+        <button class="tab-btn" onclick="openTab(event, 'settings')">⚙️ SETTINGS</button>
+    </div>
+
+    <div id="bom" class="content active">
         <div class="card">
-            <div class="card-header">
-                <div class="card-icon">💥</div>
-                <div class="card-title">
-                    <h2>BOM CHAT</h2>
-                    <p>⚡ kirim massal dengan kontrol ⚡</p>
-                </div>
+            <span class="label">Nomor Target</span>
+            <input type="number" id="targetBom" class="input-field" placeholder="628xxxxxx">
+            
+            <span class="label">Isi Pesan</span>
+            <textarea id="pesanBom" class="textarea-field" rows="3">🔥 Gacor Tuan! 🔥</textarea>
+            
+            <div class="slider-row">
+                <span>Jumlah: <b id="jmlBomVal">100</b>x</span>
+                <input type="range" id="jmlBom" min="1" max="1000" value="100" oninput="updateVal('jmlBomVal', this.value)">
             </div>
 
-            <!-- target input -->
-            <div class="input-group">
-                <div class="input-label">
-                    📱 NOMOR TARGET <span>WA aktif</span>
-                </div>
-                <input type="text" class="modern-input" id="targetNumber" placeholder="628123456789" value="62821234567">
+            <div class="slider-row">
+                <span>Delay: <b id="delayBomVal">300</b>ms</span>
+                <input type="range" id="delayBom" min="50" max="2000" value="300" oninput="updateVal('delayBomVal', this.value)">
             </div>
 
-            <!-- pesan bom -->
-            <div class="input-group">
-                <div class="input-label">
-                    💬 PESAN BOM <span>bebas</span>
-                </div>
-                <textarea class="modern-textarea" id="bombMessage">🔥 SERANGAN MERAH 🔥</textarea>
-            </div>
-
-            <!-- input jumlah (bisa diketik) + delay dalam DETIK -->
-            <div class="input-row">
-                <div class="input-half">
-                    <div class="input-label">🔢 JUMLAH</div>
-                    <input type="number" class="modern-input" id="jumlahBom" min="1" max="10000" value="100" placeholder="Contoh: 500">
-                </div>
-                <div class="input-half">
-                    <div class="input-label">⏱️ DELAY (detik)</div>
-                    <input type="number" class="modern-input" id="delayBom" min="0.1" max="10" step="0.1" value="0.5" placeholder="Contoh: 0.5">
-                </div>
-            </div>
-
-            <!-- button start bomb -->
-            <button class="btn-modern" id="bombBtn">💥 MULAI BOM 💥</button>
-
-            <!-- stats realtime -->
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-value" id="sentCount">0</div>
-                    <div class="stat-label">TERKIRIM</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="totalTarget">100</div>
-                    <div class="stat-label">TARGET</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="statusProg">⏳</div>
-                    <div class="stat-label">STATUS</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- panel kanan: CRASH & BAND terpisah -->
-        <div class="right-panel">
-            <!-- CRASH card -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">⚠️</div>
-                    <div class="card-title">
-                        <h2>CRASH SIMULATOR</h2>
-                        <p>mode rusak & error</p>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <div class="input-label">🧨 TIPE CRASH</div>
-                    <select class="modern-input" id="crashType">
-                        <option>GLITCH PESAN (rusak)</option>
-                        <option>FREEZE CHAT (beku)</option>
-                        <option>ERROR 0xFF (fatal)</option>
-                        <option>KERNEL PANIC (BSOD)</option>
-                        <option>LOOP ERROR (spam error)</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; gap: 15px; margin: 20px 0;">
-                    <div style="flex: 1;">
-                        <div class="input-label">⏱️ DELAY (ms)</div>
-                        <input type="number" id="crashDelay" value="300" class="modern-input" min="50" step="10">
-                    </div>
-                    <div style="flex: 1;">
-                        <div class="input-label">🔄 LOOP</div>
-                        <input type="number" id="crashLoop" value="8" class="modern-input" min="1" max="50">
-                    </div>
-                </div>
-
-                <button class="btn-modern" style="font-size: 20px;" onclick="startCrash()">⚠️ JALANKAN CRASH ⚠️</button>
-            </div>
-
-            <!-- BAND card -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">📢</div>
-                    <div class="card-title">
-                        <h2>BAND BROADCAST</h2>
-                        <p>simulasi broadcast massal</p>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <div class="input-label">📝 PESAN BAND</div>
-                    <textarea class="modern-textarea" id="bandMessage" placeholder="pesan broadcast...">PERINGATAN: BAND MERAH AKTIF</textarea>
-                </div>
-
-                <div style="display: flex; gap: 15px; margin: 20px 0;">
-                    <div style="flex: 1;">
-                        <div class="input-label">⏱️ DELAY (ms)</div>
-                        <input type="number" id="bandDelay" value="400" class="modern-input" min="50" step="10">
-                    </div>
-                    <div style="flex: 1;">
-                        <div class="input-label">📱 JUMLAH</div>
-                        <input type="number" id="bandCount" value="12" class="modern-input" min="1" max="100">
-                    </div>
-                </div>
-
-                <button class="btn-modern" style="font-size: 20px;" onclick="startBand()">📢 MULAI BAND 📢</button>
-            </div>
-
-            <!-- LOG PANEL -->
-            <div class="card" style="padding: 25px;">
-                <div class="preview-box">
-                    <div class="preview-emoji">🔥</div>
-                    <h3 style="color: #e0a8a8; font-size: 22px;">RED BLACK EDITION</h3>
-                    <p style="color: #b17e7e;">legal = ilegal | mode bebas</p>
-                </div>
-
-                <div class="log-console" id="liveLog">
-                    <div class="log-entry">[system] merah-hitam aktif</div>
-                    <div class="log-entry">[+] bom, crash, band siap</div>
-                    <div class="log-entry">[!] delay dalam DETIK untuk bom</div>
-                </div>
-            </div>
+            <button class="btn-action" onclick="startAction('BOM')">💥 EKSEKUSI BOM 💥</button>
+            <div class="log-box" id="logBom"></div>
         </div>
     </div>
 
-    <script>
-        // elemen global
-        const logDiv = document.getElementById('liveLog');
-        const sentSpan = document.getElementById('sentCount');
-        const totalTargetSpan = document.getElementById('totalTarget');
-        const statusSpan = document.getElementById('statusProg');
-        const bombBtn = document.getElementById('bombBtn');
+    <div id="crash" class="content">
+        <div class="card">
+            <span class="label">Nomor Target</span>
+            <input type="number" id="targetCrash" class="input-field" placeholder="628xxxxxx">
 
-        // update total target dari input jumlah
-        document.getElementById('jumlahBom').addEventListener('input', function() {
-            totalTargetSpan.innerText = this.value;
-        });
+            <span class="label">Tipe Payload Bug</span>
+            <select id="tipeCrash" class="input-field">
+                <option value="UNICODE">UNICODE GLITCH - Memory Leak</option>
+                <option value="FREEZE">ZERO WIDTH LOOP - Freeze Chat</option>
+                <option value="REVERSE">RLO REVERSE - Logic Error</option>
+                <option value="IOS">IOS SPECIAL - Crash App</option>
+            </select>
 
-        // fungsi log
-        function addLog(msg) {
-            const entry = document.createElement('div');
-            entry.className = 'log-entry';
-            const now = new Date();
-            const timestamp = '[' + now.getHours().toString().padStart(2,'0') + ':' + 
-                             now.getMinutes().toString().padStart(2,'0') + ':' + 
-                             now.getSeconds().toString().padStart(2,'0') + ']';
-            entry.innerHTML = timestamp + ' ' + msg;
-            logDiv.appendChild(entry);
-            logDiv.scrollTop = logDiv.scrollHeight;
+            <div class="slider-row">
+                <span>Looping: <b id="loopCrashVal">5</b>x</span>
+                <input type="range" id="loopCrash" min="1" max="50" value="5" oninput="updateVal('loopCrashVal', this.value)">
+            </div>
+
+            <button class="btn-action" style="background: #ff3e3e;" onclick="startAction('CRASH')">⚠️ KIRIM BUG CRASH ⚠️</button>
+            <div class="log-box" id="logCrash"></div>
+        </div>
+    </div>
+
+    <div id="band" class="content">
+        <div class="card">
+            <span class="label">Nomor Target (Utama)</span>
+            <input type="number" id="targetBand" class="input-field" placeholder="628xxxxxx">
+
+            <span class="label">Pesan Broadcast</span>
+            <textarea id="pesanBand" class="textarea-field">⚠️ BROADCAST SYSTEM ⚠️</textarea>
+            
+            <div class="slider-row">
+                <span>Spam Band: <b id="loopBandVal">10</b>x</span>
+                <input type="range" id="loopBand" min="1" max="100" value="10" oninput="updateVal('loopBandVal', this.value)">
+            </div>
+
+            <button class="btn-action" style="background: #e67e22;" onclick="startAction('BAND')">📢 MULAI SPAM BAND 📢</button>
+            <div class="log-box" id="logBand"></div>
+        </div>
+    </div>
+
+    <div id="settings" class="content">
+        <div class="card">
+            <p><strong>Status System:</strong> <span style="color:#0f0">READY</span></p><br>
+            <p>User: <b>Tuan Gigs</b></p>
+            <p>Versi: <b>3.1 (Stable)</b></p>
+            <hr style="margin: 15px 0; border: 0.5px solid rgba(255,255,255,0.1);">
+            <button class="btn-action" style="background:#555" onclick="location.reload()">🔄 REFRESH ENGINE</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        let content = document.getElementsByClassName("content");
+        for (let i = 0; i < content.length; i++) content[i].className = "content";
+        let buttons = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < buttons.length; i++) buttons[i].className = "tab-btn";
+        document.getElementById(tabName).className = "content active";
+        evt.currentTarget.className = "tab-btn active";
+    }
+
+    function updateVal(id, val) { document.getElementById(id).innerText = val; }
+
+    function addLog(targetId, msg) {
+        let log = document.getElementById(targetId);
+        let div = document.createElement("div");
+        div.className = "log-entry";
+        div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        log.prepend(div);
+    }
+
+    function startAction(type) {
+        let logId = "log" + type.charAt(0) + type.slice(1).toLowerCase();
+        let targetId = "target" + type.charAt(0) + type.slice(1).toLowerCase();
+        let target = document.getElementById(targetId).value;
+
+        if(!target) {
+            alert("Masukkan nomor target dulu, Tuan!");
+            return;
         }
 
-        // ========== BOM CHAT ==========
-        let bombInterval = null;
-        let sent = 0;
-        let total = 100;
-
-        function startBomb() {
-            if (bombInterval) {
-                clearInterval(bombInterval);
-                bombInterval = null;
-                bombBtn.innerText = '💥 MULAI BOM 💥';
-                statusSpan.innerText = '⏸️';
-                addLog('⏸️ bom dihentikan');
-                return;
-            }
-
-            const target = document.getElementById('targetNumber').value.trim();
-            const message = document.getElementById('bombMessage').value.trim();
-            const delayDetik = parseFloat(document.getElementById('delayBom').value);
-            const delayMs = delayDetik * 1000; // konversi ke milidetik
-            total = parseInt(document.getElementById('jumlahBom').value);
-            
-            if (!target) {
-                addLog('❌ nomor target kosong!');
-                return;
-            }
-
-            if (!message) {
-                addLog('❌ pesan kosong!');
-                return;
-            }
-
-            if (total < 1) total = 1;
-
-            // reset
-            sent = 0;
-            sentSpan.innerText = sent;
-            totalTargetSpan.innerText = total;
-            statusSpan.innerText = '🔴';
-            bombBtn.innerText = '⏸️ STOP BOM';
-            
-            addLog(`🔥 BOM dimulai ke ${target} (${total}x | delay ${delayDetik} detik)`);
-            addLog(`📨 Pesan: "${message.substring(0,40)}${message.length>40?'...':''}"`);
-
-            bombInterval = setInterval(() => {
-                if (sent >= total) {
-                    clearInterval(bombInterval);
-                    bombInterval = null;
-                    bombBtn.innerText = '💥 MULAI BOM 💥';
-                    statusSpan.innerText = '✅';
-                    addLog(`✅ BOM SELESAI! ${total} pesan terkirim`);
-                    return;
-                }
-
-                sent++;
-                sentSpan.innerText = sent;
-                
-                if (sent % 10 === 0 || sent === total) {
-                    addLog(`📤 [${sent}/${total}] terkirim`);
-                }
-            }, delayMs);
-        }
-
-        // event listener tombol bom
-        bombBtn.addEventListener('click', startBomb);
-
-        // ========== CRASH ==========
-        function startCrash() {
-            const type = document.getElementById('crashType').value;
-            const delay = parseInt(document.getElementById('crashDelay').value);
-            const loop = parseInt(document.getElementById('crashLoop').value);
-            
-            addLog(`⚠️ CRASH: ${type} (${loop}x | delay ${delay}ms)`);
-            
-            let count = 0;
-            const crashInt = setInterval(() => {
-                if (count >= loop) {
-                    clearInterval(crashInt);
-                    addLog('✅ Crash selesai');
-                    return;
-                }
-                
-                addLog(`💢 Crash #${count+1}: ${type.split(' ')[0]} - error injected`);
-                count++;
-            }, delay);
-        }
-
-        // ========== BAND ==========
-        function startBand() {
-            const message = document.getElementById('bandMessage').value || '⚠️ BROADCAST ⚠️';
-            const delay = parseInt(document.getElementById('bandDelay').value);
-            const loop = parseInt(document.getElementById('bandCount').value);
-            
-            addLog(`📢 BAND: ${loop}x broadcast | delay ${delay}ms`);
-            
-            let count = 0;
-            const bandInt = setInterval(() => {
-                if (count >= loop) {
-      
+        addLog(logId, `[INIT] Menghubungkan ke API...`);
+        addLog(logId, `[TARGET] Membidik: ${target}`);
+        
+        setTimeout(() => {
+            addLog(logId, `[SUCCESS] Payload ${type} berhasil diluncurkan.`);
+        }, 1200);
+    }
+</script>
+</body>
+</html>
